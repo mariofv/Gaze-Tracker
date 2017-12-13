@@ -73,3 +73,24 @@ for i=1:numImages
         end
     end
 end
+
+%% Splits the images in training dataset and testing dataset
+
+% Randomize the sample
+
+[~,~,numImagesWithEyes] = size(imagesWithEyes);
+[~,~,numImagesWithoutEyes] = size(imagesWithoutEyes);
+
+eyesIndex = randsample(numImagesWithEyes, numImagesWithEyes);
+noEyesIndex = randsample(numImagesWithoutEyes, numImagesWithoutEyes);
+
+% Training and testing dataset
+
+numTrainingEyesImages = floor(numImagesWithEyes*7/10);
+numTrainingNoEyesImages = floor(numImagesWithoutEyes*7/10);
+
+trainingDataset = cat(3,imagesWithEyes(:,:,eyesIndex(1:numTrainingEyesImages)), imagesWithoutEyes(:,:,noEyesIndex(1:numTrainingNoEyesImages)));
+testingDataset = cat(3,imagesWithEyes(:,:,eyesIndex(numTrainingEyesImages+1:end)), imagesWithoutEyes(:,:,noEyesIndex(numTrainingNoEyesImages+1:end)));
+
+%% Feature extraction
+
