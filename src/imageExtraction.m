@@ -33,21 +33,22 @@ for i=1:numImages
     
     %% Extraction of images with eyes 
     
-    % Eye 1 
     dist = uint16(abs(imCoord(3)-imCoord(1))*0.325);
-    left_1 = max(1, imCoord(1) - dist); 
-    right_1 = min(x, imCoord(1) + dist);
-    up_1 = max(1, imCoord(2) - dist); 
-    down_1 = min(y, imCoord(2) + dist);
-    imagesWithEyes(:,:, i*2-1) = imresize(im(up_1:down_1, left_1:right_1), [64,64]);
+    
+    % Eye 1 
+    left = max(1, imCoord(1) - dist); 
+    right = min(x, imCoord(1) + dist);
+    up = max(1, imCoord(2) - dist); 
+    down = min(y, imCoord(2) + dist);
+    imagesWithEyes(:,:, i*2-1) = imresize(im(up:down, left:right), [64,64]);
 %   figure; imshow(imagesWithEyes(:,:, i*2-1), []); % Used in debuging purposes
     
     % Eye 2
-    left_2 = max(1, imCoord(3) - dist); 
-    right_2 = min(x, imCoord(3) + dist);
-    up_2 = max(1, imCoord(4) - dist); 
-    down_2 = min(y, imCoord(4) + dist);
-    imagesWithEyes(:,:, i*2) = imresize(im(up_2:down_2, left_2:right_2), [64,64]);
+    left = max(1, imCoord(3) - dist); 
+    right = min(x, imCoord(3) + dist);
+    up = max(1, imCoord(4) - dist); 
+    down = min(y, imCoord(4) + dist);
+    imagesWithEyes(:,:, i*2) = imresize(im(up:down, left:right), [64,64]);
 %   figure; imshow(imagesWithEyes(:,:, i*2), []); % Used in debuging purposes
     
     %% Extraction of images without eyes
@@ -55,14 +56,18 @@ for i=1:numImages
     j = 0;
     while j < 18 
         % Gets a random center for a image without eyes
-        r_x = randi([33,352], 1);
-        r_y = randi([33,254], 1);
-        if (r_x > right_1 || r_x < left_1  && r_x > right_2 || r_x < left_2) && (r_y > down_1 || r_y < up_1  && r_y > down_2 || r_y < up_2) 
-                x1 = max(1, r_x - dist);
-                x2 = min(x, r_x + dist);
-                y1 = max(1, r_y - dist); 
-                y2 = min(y, r_y + dist);
-                imagesWithoutEyes(:,:,i*18-j) = imresize(im(y1:y2, x1:x2), [64,64]);
+        r_x = randi([17,368], 1);
+        r_y = randi([17,270], 1);
+        % Gets the distance from the random center to the eyes
+        dist_1 = sqrt(((imCoord(1)-r_x)^2)+((imCoord(2)-r_y)^2));
+        dist_2 = sqrt(((imCoord(3)-r_x)^2)+((imCoord(4)-r_y)^2));
+        
+        if (dist_1 > dist*2 && dist_2 > dist*2) 
+                left = max(1, r_x - dist);
+                right = min(x, r_x + dist);
+                up = max(1, r_y - dist); 
+                down = min(y, r_y + dist);
+                imagesWithoutEyes(:,:,i*18-j) = imresize(im(up:down, left:right), [64,64]);
 %               figure; imshow(imagesWithoutEyes(:, :, i*18-j), []); % Used in debuging purposes
                 j = j + 1;          
         end
