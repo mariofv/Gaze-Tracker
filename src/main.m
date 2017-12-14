@@ -1,15 +1,16 @@
-RGB = imread('prova.jpg');
-im = rgb2gray(RGB);
+RGB = imread('prova.pgm');
 load('../data/datasetFeatures.mat');
 
 splitter = imageSplitter(64);
 
-modelTreeBagger = TreeBagger(100, trainingFeatures, trainingClasses); % TreeBagger
-classifier = eyeClassifier(modelTreeBagger);
+modelTreeBagger = fitcknn(trainingFeatures,trainingClasses,'NumNeighbors', 1);
+featureExtractor = featureExtractor();
+classifier = eyeClassifier(modelTreeBagger,featureExtractor);
 
 eyeDetector = eyesDetector(classifier,splitter);
 
-eyesPos = eyeDetector.detect(im);
+eyesPos = eyeDetector.detect(RGB);
 
-imshow(insertMarker(RGB, eyesPos));
+RGB = insertMarker(RGB, eyesPos);
+figure();imshow(RGB);
 

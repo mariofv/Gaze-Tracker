@@ -15,22 +15,21 @@ classdef imageSplitter
       % indices of the center pixel of the subimage in the original image.
       function [splittedImages, imageCoord] = split(obj,image)
         [rows, cols] = size(image);
-        splittedImages = zeros([...
-            obj.ImagesDimension,...
-            obj.ImagesDimension,...
-            (rows-obj.ImagesDimension)*(cols-obj.ImagesDimension) ...
-        ]);
-        imageCoord = zeros([(rows-obj.ImagesDimension)*(cols-obj.ImagesDimension), 2]);
-        k = 1;
+        first = 1;
         for i=1:(rows-obj.ImagesDimension)  
             for j=1:(cols-obj.ImagesDimension)
                 up = i; 
                 left = j;
                 down = i+obj.ImagesDimension-1;
                 right = j+obj.ImagesDimension-1;
-                splittedImages(:,:, k) = image(up:down, left:right);
-                imageCoord(k,:) = [floor((down-up)/2)+up, floor((right-left)/2)+left];
-                k = k + 1;
+                if (first == 1) 
+                    splittedImages = image(up:down, left:right);
+                    imageCoord =  [floor((right-left)/2)+left, floor((down-up)/2)+up];
+                    first = 0;
+                else
+                    splittedImages = cat(3, splittedImages, image(up:down, left:right));
+                    imageCoord = cat(1, imageCoord, [floor((right-left)/2)+left, floor((down-up)/2)+up]);
+                end 
             end
         end
       

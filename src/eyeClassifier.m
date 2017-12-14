@@ -3,20 +3,23 @@ classdef eyeClassifier
     
    properties(SetAccess = private)
       Model
+      FeatureExtractor
    end
    
    methods
-      function obj = eyeClassifier(model)
+      function obj = eyeClassifier(model, featureExtractor)
          obj.Model = model;
+         obj.FeatureExtractor = featureExtractor;
       end
       
       % Given an array of images it returns an array indicatin whether
       % there is an eye on the image (TRUE) or not (FALSE)
       function prediction = classify(obj,images)
-        [labels, ~] = predict(obj.Model, images);
+        features = obj.FeatureExtractor.extractFeatures(images);
+        [labels, ~] = predict(obj.Model, features);
         [~,~,sz] = size(labels);
         prediction = false(sz, 1);
-        prediction(labels=='E') = TRUE;
+        prediction(labels=='E') = true;
       end
    end
 end
