@@ -94,3 +94,19 @@ testingDataset = cat(3,imagesWithEyes(:,:,eyesIndex(numTrainingEyesImages+1:end)
 
 %% Feature extraction
 
+% Creates the training feature matrix
+
+[~,~,trainingSize] = size(trainingDataset);
+features = zeros([trainingSize, 128]);
+
+for i = 1:trainingSize
+    imageMean = sum(sum(trainingDataset(:,:,i)))/4096;
+    features(i,:) = [sum(trainingDataset(:,:,i)) - imageMean, sum(trainingDataset(:,:,i),2)' - imageMean];    
+end
+
+% Creates the training classes vector
+
+trainingClasses = [repmat(string('Eye'),1,numTrainingEyesImages), repmat(string('No Eye'),1,numTrainingNoEyesImages)]';
+
+
+    
