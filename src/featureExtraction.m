@@ -97,16 +97,35 @@ testingDataset = cat(3,imagesWithEyes(:,:,eyesIndex(numTrainingEyesImages+1:end)
 % Creates the training feature matrix
 
 [~,~,trainingSize] = size(trainingDataset);
-features = zeros([trainingSize, 128]);
+trainingFeatures = zeros([trainingSize, 128]);
 
 for i = 1:trainingSize
     imageMean = sum(sum(trainingDataset(:,:,i)))/4096;
-    features(i,:) = [sum(trainingDataset(:,:,i)) - imageMean, sum(trainingDataset(:,:,i),2)' - imageMean];    
+    trainingFeatures(i,:) = [sum(trainingDataset(:,:,i)) - imageMean, sum(trainingDataset(:,:,i),2)' - imageMean];    
 end
 
 % Creates the training classes vector
 
-trainingClasses = [repmat(string('Eye'),1,numTrainingEyesImages), repmat(string('No Eye'),1,numTrainingNoEyesImages)]';
+trainingClasses = [repmat('E',1,numTrainingEyesImages), repmat('N',1,numTrainingNoEyesImages)]';
 
+% Creates the testing feature matrix
 
+[~,~,testingSize] = size(testingDataset);
+testingFeatures = zeros([testingSize, 128]);
+
+for i = 1:testingSize
+    imageMean = sum(sum(testingDataset(:,:,i)))/4096;
+    testingFeatures(i,:) = [sum(testingDataset(:,:,i)) - imageMean, sum(testingDataset(:,:,i),2)' - imageMean];    
+end
+
+% Creates the testing classes vector
+
+numTestingEyesImages = numImagesWithEyes - numTrainingEyesImages;
+numTestingNoEyesImages = numImagesWithoutEyes - numTrainingNoEyesImages;
+
+testingClasses = [repmat('E',1,numTestingEyesImages), repmat('N',1,numTestingNoEyesImages)]';
+
+%% Saves the features and classes of training and testing datasets
+
+save('datasetFeatures.mat', 'trainingFeatures', 'trainingClasses', 'testingFeatures', 'testingClasses'); 
     
