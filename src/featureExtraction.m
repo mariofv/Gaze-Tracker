@@ -5,8 +5,8 @@ clear;
 
 %% Extracts images with eyes and images without them from raw images
 
-imagesNames = dir ('..\data\*.pgm');
-imagesEyesCoordinates = dir ('..\data\*.eye');
+imagesNames = dir ('..\data\classifierConstructorDataset\*.pgm');
+imagesEyesCoordinates = dir ('..\data\classifierConstructorDataset\*.eye');
 numImages = length(imagesNames);
 
 imagesWithEyes = zeros([64,64,2*numImages]);
@@ -127,5 +127,5 @@ testingClasses = [repmat('E',1,numTestingEyesImages), repmat('N',1,numTestingNoE
 
 %% Saves the features and classes of training and testing datasets
 
-save('datasetFeatures.mat', 'trainingFeatures', 'trainingClasses', 'testingFeatures', 'testingClasses'); 
+% save('../data/datasetFeatures.mat', 'trainingFeatures', 'trainingClasses', 'testingFeatures', 'testingClasses'); 
     
