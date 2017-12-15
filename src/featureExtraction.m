@@ -13,7 +13,7 @@ imagesWithEyes = zeros([64,64,2*numImages]);
 imagesWithoutEyes = zeros([64,64,18*numImages]);
 imagesDist = zeros([numImages,1]);
 
-for i=1:numImagesS
+for i=1:numImages
     %% Gets raw image dimensions
     
     imName = imagesNames(i).name;
