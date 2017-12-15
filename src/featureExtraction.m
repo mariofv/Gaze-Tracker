@@ -11,18 +11,19 @@ numImages = length(imagesNames);
 
 imagesWithEyes = zeros([64,64,2*numImages]);
 imagesWithoutEyes = zeros([64,64,18*numImages]);
+imagesDist = zeros([numImages,1]);
 
-for i=1:numImages
+for i=1:numImagesS
     %% Gets raw image dimensions
     
     imName = imagesNames(i).name;
-    im = imread(strcat('..\data\', imName));
+    im = imread(strcat('..\data\classifierConstructorDataset\', imName));
     [y,x] = size(im);
     
     %% Gets eye coordinates
     
-    eyesCoordinatesName = imagesEyesCoordinates(i).name;
-    eyesCoordinatesFile = fopen(strcat('..\data\', eyesCoordinatesName));
+    eyesCoordinatesName = imagesEyesCoordinates(i).name
+    eyesCoordinatesFile = fopen(strcat('..\data\classifierConstructorDataset\', eyesCoordinatesName));
     
     textscan(eyesCoordinatesFile,'%s %s %s %s', 1); % Needed in order to discard the headers of eyes coordinates file
     
@@ -34,6 +35,7 @@ for i=1:numImages
     %% Extraction of images with eyes 
     
     dist = uint16(abs(imCoord(3)-imCoord(1))*0.325);
+    imagesDist(i) = dist*2;
     
     % Eye 1 
     left = max(1, imCoord(1) - dist); 
