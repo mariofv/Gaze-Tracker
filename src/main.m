@@ -1,6 +1,7 @@
-RGB = imread('prova.pgm');
+%RGB = imread('..\data\classifierConstructorDataset\BioID_0902.pgm');
+RGB = rgb2gray(imread('..\data\classifierConstructorDataset\BioXX_05.jpg'));
 load('../data/datasetFeatures.mat');
-load('../data/predictorKnn.mat')
+%load('../data/predictorKnn.mat')
 splitter = imageSplitter(32);
 
 modelTreeBagger = TreeBagger(100,trainingFeatures,trainingClasses);

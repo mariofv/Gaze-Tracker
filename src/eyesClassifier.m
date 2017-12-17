@@ -6,7 +6,7 @@ clear;
 %% Creates a classifier for detecting images with eyes
 
 % Loads the features of the training and testing dataset
-load('datasetFeatures.mat');
+load('..\data\datasetFeatures.mat');
 
 % Creates the model 
 modelTreeBagger = TreeBagger(100, trainingFeatures, trainingClasses); % TreeBagger

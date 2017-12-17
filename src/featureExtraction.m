@@ -7,20 +7,21 @@ clear;
 
 imagesNames = dir ('..\data\classifierConstructorDataset\*.pgm');
 imagesEyesCoordinates = dir ('..\data\classifierConstructorDataset\*.eye');
-numImages = length(imagesNames);
+numImagesWithEyes = 2*length(imagesNames);
+numImagesWithoutEyes = 9*numImagesWithEyes;
 
-imagesWithEyes = zeros([64,64,2*numImages]);
-imagesWithoutEyes = zeros([64,64,18*numImages]);
+imagesWithEyes = zeros([64,64,numImagesWithEyes]);
+imagesWithoutEyes = zeros([64,64,numImagesWithoutEyes]);
 imagesDist = zeros([numImages,1]);
 
 for i=1:numImages
-    %% Gets raw image dimensions
+    % Gets raw image dimensions
     
     imName = imagesNames(i).name;
     im = imread(strcat('..\data\classifierConstructorDataset\', imName));
     [y,x] = size(im);
     
-    %% Gets eye coordinates
+    % Gets eye coordinates
     
     eyesCoordinatesName = imagesEyesCoordinates(i).name;
     eyesCoordinatesFile = fopen(strcat('..\data\classifierConstructorDataset\', eyesCoordinatesName));
@@ -32,7 +33,7 @@ for i=1:numImages
     
     fclose(eyesCoordinatesFile);
     
-    %% Extraction of images with eyes 
+    % Extraction of images with eyes 
     
     dist = uint16(abs(imCoord(3)-imCoord(1))*0.325);
     imagesDist(i) = dist*2;
@@ -53,7 +54,7 @@ for i=1:numImages
     imagesWithEyes(:,:, i*2) = imresize(im(up:down, left:right), [64,64]);
 %   figure; imshow(imagesWithEyes(:,:, i*2), []); % Used in debuging purposes
     
-    %% Extraction of images without eyes
+    % Extraction of images without eyes
     
     j = 0;
     while j < 18 
@@ -79,9 +80,6 @@ end
 %% Splits the images in training dataset and testing dataset
 
 % Randomize the sample
-
-[~,~,numImagesWithEyes] = size(imagesWithEyes);
-[~,~,numImagesWithoutEyes] = size(imagesWithoutEyes);
 
 eyesIndex = randsample(numImagesWithEyes, numImagesWithEyes);
 noEyesIndex = randsample(numImagesWithoutEyes, numImagesWithoutEyes);
