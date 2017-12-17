@@ -16,18 +16,18 @@ classdef imageSplitter
       function [splittedImages, imageCoord] = split(obj,image)
         [rows, cols] = size(image);
         first = 1;
-        for i=1:(rows-obj.ImagesDimension)  
-            for j=1:(cols-obj.ImagesDimension)
+        for i=1:4:(rows-obj.ImagesDimension)  
+            for j=1:4:(cols-obj.ImagesDimension)
                 up = i; 
                 left = j;
                 down = i+obj.ImagesDimension-1;
                 right = j+obj.ImagesDimension-1;
                 if (first == 1) 
-                    splittedImages = image(up:down, left:right);
+                    splittedImages = imresize(image(up:down, left:right), [64,64]);
                     imageCoord =  [floor((right-left)/2)+left, floor((down-up)/2)+up];
                     first = 0;
                 else
-                    splittedImages = cat(3, splittedImages, image(up:down, left:right));
+                    splittedImages = cat(3, splittedImages, imresize(image(up:down, left:right), [64, 64]));
                     imageCoord = cat(1, imageCoord, [floor((right-left)/2)+left, floor((down-up)/2)+up]);
                 end 
             end

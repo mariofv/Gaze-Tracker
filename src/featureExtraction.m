@@ -22,7 +22,7 @@ for i=1:numImages
     
     %% Gets eye coordinates
     
-    eyesCoordinatesName = imagesEyesCoordinates(i).name
+    eyesCoordinatesName = imagesEyesCoordinates(i).name;
     eyesCoordinatesFile = fopen(strcat('..\data\classifierConstructorDataset\', eyesCoordinatesName));
     
     textscan(eyesCoordinatesFile,'%s %s %s %s', 1); % Needed in order to discard the headers of eyes coordinates file
@@ -99,11 +99,12 @@ testingDataset = cat(3,imagesWithEyes(:,:,eyesIndex(numTrainingEyesImages+1:end)
 % Creates the training feature matrix
 
 [~,~,trainingSize] = size(trainingDataset);
-trainingFeatures = zeros([trainingSize, 128]);
+trainingFeatures = zeros([trainingSize, 128+1764]);
 
 for i = 1:trainingSize
     imageMean = sum(sum(trainingDataset(:,:,i)))/4096;
-    trainingFeatures(i,:) = [sum(trainingDataset(:,:,i)) - imageMean, sum(trainingDataset(:,:,i),2)' - imageMean];    
+    HOGFeatures = extractHOGFeatures(trainingDataset(:,:,i));
+    trainingFeatures(i,:) = [sum(trainingDataset(:,:,i)) - imageMean, sum(trainingDataset(:,:,i),2)' - imageMean,HOGFeatures];    
 end
 
 % Creates the training classes vector
@@ -113,11 +114,12 @@ trainingClasses = [repmat('E',1,numTrainingEyesImages), repmat('N',1,numTraining
 % Creates the testing feature matrix
 
 [~,~,testingSize] = size(testingDataset);
-testingFeatures = zeros([testingSize, 128]);
+testingFeatures = zeros([testingSize, 128+1764]);
 
 for i = 1:testingSize
     imageMean = sum(sum(testingDataset(:,:,i)))/4096;
-    testingFeatures(i,:) = [sum(testingDataset(:,:,i)) - imageMean, sum(testingDataset(:,:,i),2)' - imageMean];    
+    HOGFeatures = extractHOGFeatures(testingDataset(:,:,i));
+    testingFeatures(i,:) = [sum(testingDataset(:,:,i)) - imageMean, sum(testingDataset(:,:,i),2)' - imageMean,HOGFeatures];    
 end
 
 % Creates the testing classes vector
@@ -129,5 +131,5 @@ testingClasses = [repmat('E',1,numTestingEyesImages), repmat('N',1,numTestingNoE
 
 %% Saves the features and classes of training and testing datasets
 
-% save('../data/datasetFeatures.mat', 'trainingFeatures', 'trainingClasses', 'testingFeatures', 'testingClasses'); 
+save('../data/datasetFeatures.mat', 'trainingFeatures', 'trainingClasses', 'testingFeatures', 'testingClasses'); 
     

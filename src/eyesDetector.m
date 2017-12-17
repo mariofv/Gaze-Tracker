@@ -17,13 +17,7 @@ classdef eyesDetector
       function eyesPos = detect(obj,image)
          [splittedImages, imageCoord] = obj.Splitter.split(image);
          prediction = obj.EyeClassifier.classify(splittedImages);
-         possibleEyes = find(prediction);
-         
-%          if size(possibleEyes) < 2
-%             eyesPos = -1;
-%          else
-            eyesPos = imageCoord(possibleEyes,:);
-%          end
+         eyesPos = imageCoord(prediction,:);
       end
       
    end

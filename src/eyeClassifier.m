@@ -4,6 +4,9 @@ classdef eyeClassifier
    properties(SetAccess = private)
       Model
       FeatureExtractor
+      EyesImages
+      Labels
+      Scores
    end
    
    methods
@@ -16,10 +19,15 @@ classdef eyeClassifier
       % there is an eye on the image (TRUE) or not (FALSE)
       function prediction = classify(obj,images)
         features = obj.FeatureExtractor.extractFeatures(images);
-        [labels, ~] = predict(obj.Model, features);
-        [~,~,sz] = size(labels);
-        prediction = false(sz, 1);
-        prediction(labels=='E') = true;
+        [obj.Labels, obj.Scores] = predict(obj.Model, features);
+        prediction = cell2mat(obj.Labels)=='E';
+        
+        obj.EyesImages = images(:,:,prediction);
+      end
+      
+      function eyesImages = getEyesImages(obj)
+        eyesImages = obj.getEyesImages;
       end
    end
+   
 end
