@@ -1,5 +1,5 @@
-%RGB = imread('..\data\classifierConstructorDataset\BioID_0902.pgm');
-RGB = rgb2gray(imread('..\data\classifierConstructorDataset\BioXX_05.jpg'));
+% RGB = imread('..\data\classifierConstructorDataset\BioID_0001.pgm');
+RGB = rgb2gray(imread('..\data\classifierConstructorDataset\BioXX_02.jpg'));
 load('../data/datasetFeatures.mat');
 %load('../data/predictorKnn.mat')
 splitter = imageSplitter(32);

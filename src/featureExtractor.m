@@ -9,13 +9,11 @@ classdef featureExtractor
       % that images
       function features = extractFeatures(obj,images)
         [rows,cols,numImages] = size(images);
-        features = zeros([numImages, 2*(rows+cols)+144]);
+        features = zeros([numImages, rows+cols+192]);
         for i = 1:numImages
             imageMean = sum(sum(images(:,:,i)))/(rows*cols);
-            HOGFeatures = extractHOGFeatures(images(1:64,1:64,i),'CellSize',[16 16],'BlockSize',[4 4]);
-            diagonal = [diag(fliplr(images(1:64,1:64,i)))',diag(images(1:64,1:64,i))'];
-            diagonal = diagonal/min(min(diagonal));
-            features(i,:) = [sum(images(:,:,i)) - imageMean, sum(images(:,:,i),2)' - imageMean, HOGFeatures, diagonal];    
+            HOGFeatures = extractHOGFeatures(images(1:64,1:64,i),'CellSize',[16 16],'BlockSize',[4 4],'NumBins',12);
+            features(i,:) = [sum(images(:,:,i)) - imageMean, sum(images(:,:,i),2)' - imageMean, HOGFeatures];    
         end
       end
    end

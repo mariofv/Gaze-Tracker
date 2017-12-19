@@ -97,17 +97,6 @@ testingDataset = cat(3,imagesWithEyes(:,:,eyesIndex(numTrainingEyesImages+1:end)
 
 % Creates the training feature matrix
 
-% [~,~,trainingSize] = size(trainingDataset);
-% trainingFeatures = zeros([trainingSize, sizeFeature]);
-% 
-% for i = 1:trainingSize
-%     imageMean = sum(sum(trainingDataset(:,:,i)))/4096;
-%     HOGFeatures = extractHOGFeatures(trainingDataset(1:64,1:64,i),'CellSize',[16 16],'BlockSize',[4 4]);
-%     diagonal = [diag(fliplr(trainingDataset(1:64,1:64,i)))',diag(trainingDataset(1:64,1:64,i))'];
-%     diagonal = diagonal/min(min(diagonal));
-%     trainingFeatures(i,:) = [sum(trainingDataset(:,:,i)) - imageMean, sum(trainingDataset(:,:,i),2)' - imageMean,HOGFeatures,diagonal];    
-% end
-
 trainingFeatures = featureSetExtractor(trainingDataset);
 
 % Creates the training classes vector
@@ -115,17 +104,6 @@ trainingFeatures = featureSetExtractor(trainingDataset);
 trainingClasses = [repmat('E',1,numTrainingEyesImages), repmat('N',1,numTrainingNoEyesImages)]';
 
 % Creates the testing feature matrix
-
-% [~,~,testingSize] = size(testingDataset);
-% testingFeatures = zeros([testingSize, sizeFeature]);
-% 
-% for i = 1:testingSize
-%     imageMean = sum(sum(testingDataset(:,:,i)))/4096;
-%     HOGFeatures = extractHOGFeatures(testingDataset(1:64,1:64,i),'CellSize',[16,16],'BlockSize',[4 4]);
-%     diagonal = [diag(fliplr(trainingDataset(1:64,1:64,i)))',diag(trainingDataset(1:64,1:64,i))'];
-%     diagonal = diagonal/min(min(diagonal));
-%     testingFeatures(i,:) = [sum(testingDataset(:,:,i)) - imageMean, sum(testingDataset(:,:,i),2)' - imageMean,HOGFeatures,diagonal];    
-% end
 
 testingFeatures = featureSetExtractor(testingDataset);
 
