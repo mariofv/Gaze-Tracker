@@ -5,8 +5,8 @@ clear;
 
 %% Extracts images with eyes and images without them from raw images
 
-imagesNames = dir ('..\data\classifierConstructorDataset\*.pgm');
-imagesEyesCoordinates = dir ('..\data\classifierConstructorDataset\*.eye');
+imagesNames = dir ('..\..\data\classifierConstructorDataset\*.pgm');
+imagesEyesCoordinates = dir ('..\..\data\classifierConstructorDataset\*.eye');
 numImages = length(imagesNames);
 numImagesWithEyes = 2*numImages;
 numImagesWithoutEyes = 9*numImagesWithEyes;
@@ -19,13 +19,13 @@ for i=1:numImages
     % Gets raw image dimensions
     
     imName = imagesNames(i).name;
-    im = imread(strcat('..\data\classifierConstructorDataset\', imName));
+    im = imread(strcat('..\..\data\classifierConstructorDataset\', imName));
     [y,x] = size(im);
     
     % Gets eye coordinates
     
     eyesCoordinatesName = imagesEyesCoordinates(i).name;
-    eyesCoordinatesFile = fopen(strcat('..\data\classifierConstructorDataset\', eyesCoordinatesName));
+    eyesCoordinatesFile = fopen(strcat('..\..\data\classifierConstructorDataset\', eyesCoordinatesName));
     
     textscan(eyesCoordinatesFile,'%s %s %s %s', 1); % Needed in order to discard the headers of eyes coordinates file
     
@@ -95,9 +95,11 @@ testingDataset = cat(3,imagesWithEyes(:,:,eyesIndex(numTrainingEyesImages+1:end)
 
 %% Feature extraction
 
+featureExtractor = featureExtractor();
+
 % Creates the training feature matrix
 
-trainingFeatures = featureSetExtractor(trainingDataset);
+trainingFeatures = featureExtractor.extractFeatures(trainingDataset);
 
 % Creates the training classes vector
 
@@ -105,7 +107,7 @@ trainingClasses = [repmat('E',1,numTrainingEyesImages), repmat('N',1,numTraining
 
 % Creates the testing feature matrix
 
-testingFeatures = featureSetExtractor(testingDataset);
+testingFeatures = featureExtractor.extractFeatures(testingDataset);
 
 % Creates the testing classes vector
 
@@ -116,5 +118,5 @@ testingClasses = [repmat('E',1,numTestingEyesImages), repmat('N',1,numTestingNoE
 
 %% Saves the features and classes of training and testing datasets
 
-save('../data/datasetFeatures.mat', 'trainingFeatures', 'trainingClasses', 'testingFeatures', 'testingClasses'); 
+save('../../data/datasetFeatures.mat', 'trainingFeatures', 'trainingClasses', 'testingFeatures', 'testingClasses'); 
     

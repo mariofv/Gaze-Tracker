@@ -1,5 +1,5 @@
 % Used to detect the pressence of eyes in an image
-classdef eyesDetector
+classdef eyeDetector
     
    properties(SetAccess = private)
       EyeClassifier
@@ -7,7 +7,7 @@ classdef eyesDetector
    end
    
    methods
-      function obj = eyesDetector(classifier, splitter)
+      function obj = eyeDetector(classifier, splitter)
          obj.EyeClassifier = classifier;
          obj.Splitter = splitter;
       end

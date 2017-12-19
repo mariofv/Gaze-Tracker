@@ -3,11 +3,13 @@ classdef imageSplitter
     
    properties(SetAccess = private)
       ImagesDimension
+      SampleFrequency
    end
    
    methods
-      function obj = imageSplitter(imagesDimension)
+      function obj = imageSplitter(imagesDimension, sampleFrequency)
          obj.ImagesDimension = imagesDimension;
+         obj.SampleFrequency = sampleFrequency;
       end
       
       % Given an image it returns a set of images extracted from it and
@@ -16,8 +18,8 @@ classdef imageSplitter
       function [splittedImages, imageCoord] = split(obj,image)
         [rows, cols] = size(image);
         first = 1;
-        for i=1:4:(rows-obj.ImagesDimension)  
-            for j=1:4:(cols-obj.ImagesDimension)
+        for i=1:obj.SampleFrequency:(rows-obj.ImagesDimension)  
+            for j=1:obj.SampleFrequency:(cols-obj.ImagesDimension)
                 up = i; 
                 left = j;
                 down = i+obj.ImagesDimension-1;

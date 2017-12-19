@@ -1,20 +1,25 @@
-% RGB = imread('..\data\classifierConstructorDataset\BioID_0001.pgm');
+%% Loads the image
 RGB = rgb2gray(imread('..\data\classifierConstructorDataset\BioXX_02.jpg'));
-load('../data/datasetFeatures.mat');
-%load('../data/predictorKnn.mat')
-splitter = imageSplitter(32);
 
-modelTreeBagger = TreeBagger(100,trainingFeatures,trainingClasses);
+%% Loads the classificator
+
+load('../data/eyeClassifier.mat');
+
+%% Creates the objects needed in the classification
+splitter = imageSplitter(32, 4);
+
 featureExtractor = featureExtractor();
-classifier = eyeClassifier(modelTreeBagger,featureExtractor);
+classifier = eyeClassifier(classifierTreeBagger, featureExtractor);
 
-eyeDetector = eyesDetector(classifier,splitter);
+eyeDetector = eyeDetector(classifier,splitter);
 
+%% Looks for the eyes in the image
 eyesPos = eyeDetector.detect(RGB);
 [images,centerPos] = splitter.split(RGB);
 
+
+%% Prints the results
 hold on
-%RGB = insertMarker(RGB, centerPos, 'color','red');
 RGB = insertMarker(RGB, eyesPos, 'color','green'); 
 imshow(RGB);
 hold off

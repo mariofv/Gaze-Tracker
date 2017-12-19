@@ -12,8 +12,20 @@ classdef featureExtractor
         features = zeros([numImages, rows+cols+192]);
         for i = 1:numImages
             imageMean = sum(sum(images(:,:,i)))/(rows*cols);
+            
+            % This feature is the substraction of the sum of 
+            % every row of the image with the mean of the whole image.
+            rowMeanFeatures = sum(images(:,:,i)) - imageMean;
+            
+            % This feature is the substraction of the sum of 
+            % every column of the image with the mean of the whole image.
+            colMeanFeatures = sum(images(:,:,i),2)' - imageMean;
+            
+            % HOG features
             HOGFeatures = extractHOGFeatures(images(1:64,1:64,i),'CellSize',[16 16],'BlockSize',[4 4],'NumBins',12);
-            features(i,:) = [sum(images(:,:,i)) - imageMean, sum(images(:,:,i),2)' - imageMean, HOGFeatures];    
+            
+            
+            features(i,:) = [rowMeanFeatures, colMeanFeatures, HOGFeatures];    
         end
       end
    end
