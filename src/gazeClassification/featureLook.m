@@ -4,20 +4,21 @@ clc;
 clear;
 
 %% Classifying images with eyes
-load('..\data\look.mat');
-imagesNames = dir ('..\data\classifierConstructorDataset\*.pgm');
-imagesEyesCoordinates = dir ('..\data\classifierConstructorDataset\*.eye');
+load('..\..\data\look.mat');
+imagesNames = dir ('..\..\data\classifierConstructorDataset\*.pgm');
+imagesEyesCoordinates = dir ('..\..\data\classifierConstructorDataset\*.eye');
 numImages = length(imagesNames);
 
 %imagesLooking = zeros([1,numImages]);
 
 
-%Jordi = 1:50 51:100 101:200
-for i=101:200
+%Jordi = 1:1500
+
+for i=1501:numImages
     % Gets raw image dimensions
     
     imName = imagesNames(i).name;
-    im = imread(strcat('..\data\classifierConstructorDataset\', imName));
+    im = imread(strcat('..\..\data\classifierConstructorDataset\', imName));
     imshow(im,[]);
     
     % Get var from keyborad
@@ -26,4 +27,4 @@ for i=101:200
     
 end
 
-save('../data/look.mat', 'imagesLooking'); 
+save('../..\data/look.mat', 'imagesLooking'); 
