@@ -12,7 +12,7 @@ classdef featureExtractor
         HOGFeatures = extractHOGFeatures(images(1:64,1:64,1),'CellSize',[16 16],'BlockSize',[4 4],'NumBins',12);
         [~,HOGsize] = size(HOGFeatures);
         features = zeros([numImages, rows+cols+HOGsize]);
-        for i = 1:numImages
+        parfor i = 1:numImages
             imageMean = sum(sum(images(:,:,i)))/(rows*cols);
             
             % This feature is the substraction of the sum of 
@@ -24,7 +24,7 @@ classdef featureExtractor
             colMeanFeatures = sum(images(:,:,i),2)' - imageMean;
             
             % HOG features
-            HOGFeatures = extractHOGFeatures(images(1:64,1:64,i),'CellSize',[16 16],'BlockSize',[4 4],'NumBins',12);
+            HOGFeatures = extractHOGFeatures(images(:,:,i),'CellSize',[16 16],'BlockSize',[4 4],'NumBins',12);
             
             features(i,:) = [rowMeanFeatures, colMeanFeatures, HOGFeatures];    
         end
@@ -46,7 +46,7 @@ classdef featureExtractor
 %                 colMeanFeatures = sum(images(:,:,i),2)' - imageMean;
 % 
 %                 % HOG features
-%                 HOGFeatures = extractHOGFeatures(images(1:64,1:64,1),'CellSize',[cell cell],'BlockSize',[block block],'NumBins',bin);
+%                 HOGFeatures = extractHOGFeatures(images(:,:,1),'CellSize',[cell cell],'BlockSize',[block block],'NumBins',bin);
 % 
 %                 features(i,:) = [rowMeanFeatures, colMeanFeatures, HOGFeatures];  
 %             end
