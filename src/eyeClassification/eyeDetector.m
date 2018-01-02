@@ -56,5 +56,50 @@ classdef eyeDetector
             eyesPos = [clusterCentroids(i,:); clusterCentroids(j,:)];
         end
         
+                % Given an image it returns -1 if there is no eyes on it or their
+        % position otherwise.
+        function eyesPos = detect2(obj,image)
+            [splittedImages, imageCoord] = obj.Splitter.split(image);
+            prediction = obj.EyeClassifier.classify(splittedImages);
+            possibleEyesPos = imageCoord(prediction,:);
+            
+            [x,y] = size(image);
+            A = zeros(x, y);
+            M = [0 0 0 0 0 1 1 1 1 1 0 0 0 0 0;
+                 0 0 0 1 1 2 2 2 2 2 1 1 0 0 0;
+                 0 0 1 2 2 3 3 3 3 3 2 2 1 0 0;
+                 0 1 2 2 3 4 4 4 4 4 3 2 2 1 0;
+                 0 1 2 3 4 4 5 5 5 4 4 3 2 1 0;
+                 1 2 3 4 4 5 6 6 6 5 4 4 3 2 1;
+                 1 2 3 4 5 6 7 7 7 6 5 4 3 2 1;
+                 1 2 3 4 5 6 7 8 7 6 5 4 3 2 1;
+                 1 2 3 4 5 6 7 7 7 6 5 4 3 2 1;
+                 1 2 3 4 4 5 6 6 6 5 4 4 3 2 1;
+                 0 1 2 3 4 4 5 5 5 4 4 3 2 1 0;
+                 0 1 2 2 3 4 4 4 4 4 3 2 2 1 0;
+                 0 0 1 2 2 3 3 3 3 3 2 2 1 0 0;
+                 0 0 0 1 1 2 2 2 2 2 1 1 0 0 0;
+                 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0];
+
+           for i = 1:size(possibleEyesPos,1)
+                varX = possibleEyesPos(i,1);
+             	varY = possibleEyesPos(i,2);
+             	A(varX-7:varX+7,varY-7:varY+7) = A(varX-7:varX+7,varY-7:varY+7) + M;
+           end
+           
+           S = struct2cell(regionprops(bwconncomp(A),'Centroid'));
+           sS = size(S);
+
+           for i=1:sS(2)-1
+                for j=i+1:sS(2)
+                    aux = abs(S{1,i}(1) - S{1,j}(1));
+                    if (aux < 10)
+                        firstEyeCenter = [S{1,i}(2), S{1,i}(1)];
+                        secondEyeCenter = [S{1,j}(2), S{1,j}(1)];
+                    end
+                end
+           end
+           eyesPos = [firstEyeCenter;secondEyeCenter];
+        end
     end
 end
