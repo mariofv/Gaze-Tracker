@@ -29,8 +29,42 @@ possibleEyesPos = eyeDetector.detect(RGB);
 
 %% Prints the results
 hold on
-RGB = insertMarker(RGB, possibleEyesPos, 'color','green'); 
-imshow(RGB);
+markedRGB = insertMarker(RGB, possibleEyesPos, 'color','green'); 
+imshow(markedRGB);
 hold off
 
 %% Extracts true eyes positions using HOUGH
+rad = round(subImageSize/2);
+
+[x,y] = size(RGB);
+
+A = zeros(x, y);
+
+% Main loop
+for i = 1:size(possibleEyesPos,1)
+    for theta = 0:359  
+        a = round(possibleEyesPos(i,1) - rad * cos(deg2rad(theta))); % polar coordinate for center
+        b = round(possibleEyesPos(i,2) - rad * sin(deg2rad(theta)));  % polar coordinate for center 
+        if b == 4748
+            c=2;
+        end
+        A(a,b) = A(a,b) + 1; % voting
+    end
+end
+
+% Finds the most voted centers
+firstMaxValue = max(max(max(A)));
+[firstEyeX, firstEyeY] = find(A==firstMaxValue);
+firstEyeCenter = [firstEyeX, firstEyeY];
+A(firstEyeX, firstEyeY) = -1;
+
+secondMaxValue = max(max(max(A)));
+[secondEyeX, secondEyeY] = find(A==secondMaxValue);
+secondEyeCenter = [secondEyeX, secondEyeY];
+
+%% Prints the results
+hold on
+markedRGB = insertMarker(RGB, [firstEyeCenter;secondEyeCenter], 'color','green'); 
+markedRGB = insertMarker(markedRGB, possibleEyesPos, 'color','red'); 
+imshow(markedRGB);
+hold off
