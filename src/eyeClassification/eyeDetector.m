@@ -58,10 +58,10 @@ classdef eyeDetector
         
                 % Given an image it returns -1 if there is no eyes on it or their
         % position otherwise.
-        function eyesPos = detect2(obj,image)
+        function [detectedEyesPos,possibleEyesPos] = detect2(obj,image)
             [splittedImages, imageCoord] = obj.Splitter.split(image);
             prediction = obj.EyeClassifier.classify(splittedImages);
-            possibleEyesPos = imageCoord(prediction,:);
+            unclassifiedEyesPos = imageCoord(prediction,:);
             
             [x,y] = size(image);
             A = zeros(x, y);
@@ -81,25 +81,28 @@ classdef eyeDetector
                  0 0 0 1 1 2 2 2 2 2 1 1 0 0 0;
                  0 0 0 0 0 1 1 1 1 1 0 0 0 0 0];
 
-           for i = 1:size(possibleEyesPos,1)
-                varX = possibleEyesPos(i,1);
-             	varY = possibleEyesPos(i,2);
+           for i = 1:size(unclassifiedEyesPos,1)
+                varX = unclassifiedEyesPos(i,1);
+             	varY = unclassifiedEyesPos(i,2);
              	A(varX-7:varX+7,varY-7:varY+7) = A(varX-7:varX+7,varY-7:varY+7) + M;
            end
            
            S = struct2cell(regionprops(bwconncomp(A),'Centroid'));
-           sS = size(S);
+           sS = size(S); sS = sS(2);
+           
+           possibleEyesPos = zeros(sS,2);
+           for i=1:sS
+               possibleEyesPos(i,:) = [round(S{1,i}(2)), round(S{1,i}(1))];
+           end
 
-           for i=1:sS(2)-1
-                for j=i+1:sS(2)
-                    aux = abs(S{1,i}(1) - S{1,j}(1));
-                    if (aux < 10)
-                        firstEyeCenter = [S{1,i}(2), S{1,i}(1)];
-                        secondEyeCenter = [S{1,j}(2), S{1,j}(1)];
+           detectedEyesPos = [];
+           for i=1:sS-1
+                for j=i+1:sS
+                    if (abs(possibleEyesPos(i,2) - possibleEyesPos(j,2)) < 10)
+                        detectedEyesPos = [detectedEyesPos;possibleEyesPos(i,:);possibleEyesPos(j,:)];
                     end
                 end
            end
-           eyesPos = [firstEyeCenter;secondEyeCenter];
         end
     end
 end

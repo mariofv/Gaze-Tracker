@@ -8,7 +8,7 @@ subImageSize = 32;
 subImageSampleFreq = 2;
 
 %% Loads the image
-RGB = imread('..\data\classifierConstructorDataset\BioID_0233.pgm'); %27 93
+RGB = imread('..\data\classifierConstructorDataset\BioID_0027.pgm'); %27 93 233 745 1000 1313
 
 %% Loads the classificator
 
@@ -23,13 +23,17 @@ classifier = eyeClassifier(classifierTreeBagger, featureExtractor);
 eyeDetector = eyeDetector(classifier,splitter);
 
 %% Looks for the eyes in the image
-eyesPos = eyeDetector.detect2(RGB);
+[detectedEyesPos,possibleEyesPos] = eyeDetector.detect2(RGB);
 
 %% Prints the results
-hold on
-markedRGB = insertMarker(RGB, eyesPos, 'color','green'); 
-imshow(markedRGB);
-hold off
+if(~isempty(possibleEyesPos))
+    RGB = insertMarker(RGB, possibleEyesPos, 'color','red');
+    if(~isempty(detectedEyesPos))
+        RGB = insertMarker(RGB, detectedEyesPos, 'color','green');
+    end
+end
+imshow(RGB);
+
 
 
 
