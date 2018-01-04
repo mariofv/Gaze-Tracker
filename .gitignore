@@ -1,7 +1,3 @@
 *.mat
 *.asv
-!look.mat
-!datasetImagesTest1.mat
-!datasetImagesTest2.mat
-!testingResults1.mat
-!testingResults2.mat
+
