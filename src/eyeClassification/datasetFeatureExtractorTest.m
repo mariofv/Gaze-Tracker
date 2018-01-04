@@ -9,7 +9,7 @@ load('..\..\data\datasetImagesTest2.mat');
 vectorTest = [8 4 9; 12 4 9; 16 4 9; 20 4 9; 24 4 9;
                 16 2 9; 16 3 9; 16 4 9; 16 5 9; 16 6 9;
                 16 4 9; 16 4 10; 16 4 11; 16 4 12; 16 4 13];
-resultTest = zeros(15,2,6); %Fila: cell / black / numBins / acc / eyes / noEyes
+resultTest = zeros(15,5,6); %Fila: cell / black / numBins / acc / eyes / noEyes
 
 % Creates the training and testing classes vector
 trainingClasses = [repmat('E',1,numTrainingEyesImages), repmat('N',1,numTrainingNoEyesImages)]';
@@ -24,7 +24,7 @@ testingClasses = [repmat('E',1,numTestingEyesImages), repmat('N',1,numTestingNoE
 parfor i=1:15
     varTest = vectorTest(i,:);
     featureExtractor = featureExtractor();
-    for j=1:2
+    for j=1:5
         % Creates the training and testing feature matrix
         trainingFeatures = featureExtractor.extractFeaturesTesting(trainingDataset,varTest(1),varTest(2),varTest(3));
         testingFeatures = featureExtractor.extractFeaturesTesting(testingDataset,varTest(1),varTest(2),varTest(3));
