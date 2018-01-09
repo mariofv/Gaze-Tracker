@@ -8,7 +8,7 @@ subImageSize = 32;
 subImageSampleFreq = 4;
 
 %% Loads the image
-RGB = imread('..\data\classifierConstructorDataset\BioID_0047.pgm');
+RGB = imread('..\data\classifierConstructorDataset\BioID_1212.pgm');
 
 %% Loads the classificator
 
