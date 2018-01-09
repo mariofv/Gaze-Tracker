@@ -5,7 +5,7 @@ clear;
 %% Feature extraction
 
 % Loads the images and initialize var
-load('..\..\data\datasetFeaturesTest1.mat');
+load('..\..\data\eyeClassification\datasetFeaturesTest1.mat');
 vectorTest = [65 70 75 80 85 90 95 100 105 110 115 120 125 130 135];
 resultTest = zeros(15,5,4); %Fila: size / acc / eyes / noEyes
 
@@ -36,4 +36,4 @@ end
 
 %% Saves the results of the tests
 
-save('../../data/testingResults3.mat', 'resultTest');
+save('../../data/eyeClassification/testingResults3.mat', 'resultTest');

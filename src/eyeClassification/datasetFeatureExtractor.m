@@ -6,7 +6,7 @@ clear;
 %% Feature extraction
 
 % Loads the images
-load('..\..\data\datasetImages.mat');
+load('..\..\data\eyeClassification\datasetImages.mat');
 
 featureExtractor = featureExtractor();
 
@@ -31,5 +31,5 @@ testingClasses = [repmat('E',1,numTestingEyesImages), repmat('N',1,numTestingNoE
 
 %% Saves the features and classes of training and testing datasets
 
-save('../../data/datasetFeatures.mat', 'trainingFeatures', 'trainingClasses', 'testingFeatures', 'testingClasses');
+save('../../data/eyeClassification/datasetFeatures.mat', 'trainingFeatures', 'trainingClasses', 'testingFeatures', 'testingClasses');
     

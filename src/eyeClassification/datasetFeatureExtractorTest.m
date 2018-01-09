@@ -5,7 +5,7 @@ clear;
 %% Feature extraction
 
 % Loads the images and initialize var
-load('..\..\data\datasetImagesTest2.mat');
+load('..\..\data\eyeClassification\datasetImagesTest2.mat');
 vectorTest = [8 4 9; 12 4 9; 16 4 9; 20 4 9; 24 4 9;
                 16 2 9; 16 3 9; 16 4 9; 16 5 9; 16 6 9;
                 16 4 9; 16 4 10; 16 4 11; 16 4 12; 16 4 13];
@@ -51,4 +51,4 @@ end
 
 %% Saves the results of the tests
 
-save('../../data/testingResults2.mat', 'resultTest');
+save('../../data/eyeClassification/testingResults2.mat', 'resultTest');
