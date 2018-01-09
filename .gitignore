@@ -1,3 +1,7 @@
 *.mat
 *.asv
+!testingResults3.mat
+!testingResults4.mat
+!datasetFeaturesTest1.mat
+!datasetFeaturesTest2.mat
 

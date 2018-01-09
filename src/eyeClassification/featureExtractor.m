@@ -9,7 +9,7 @@ classdef featureExtractor
       % that images
       function features = extractFeatures(obj,images)
         [rows,cols,numImages] = size(images);
-        HOGFeatures = extractHOGFeatures(images(1:64,1:64,1),'CellSize',[16 16],'BlockSize',[4 4],'NumBins',12);
+        HOGFeatures = extractHOGFeatures(images(1:64,1:64,1),'CellSize',[16 16],'BlockSize',[4 4],'NumBins',9);
         [~,HOGsize] = size(HOGFeatures);
         features = zeros([numImages, rows+cols+HOGsize]);
         parfor i = 1:numImages
@@ -24,7 +24,7 @@ classdef featureExtractor
             colMeanFeatures = sum(images(:,:,i),2)' - imageMean;
             
             % HOG features
-            HOGFeatures = extractHOGFeatures(images(:,:,i),'CellSize',[16 16],'BlockSize',[4 4],'NumBins',12);
+            HOGFeatures = extractHOGFeatures(images(:,:,i),'CellSize',[16 16],'BlockSize',[4 4],'NumBins',9);
             
             features(i,:) = [rowMeanFeatures, colMeanFeatures, HOGFeatures];    
         end
