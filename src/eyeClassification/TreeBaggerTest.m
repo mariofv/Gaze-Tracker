@@ -5,13 +5,15 @@ clear;
 %% Feature extraction
 
 % Loads the images and initialize var
-load('..\..\data\eyeClassification\datasetFeaturesTest1.mat');
-vectorTest = [65 70 75 80 85 90 95 100 105 110 115 120 125 130 135];
-resultTest = zeros(15,5,4); %Fila: size / acc / eyes / noEyes
+load('..\..\data\datasetFeaturesTest2.mat');
+vectorTest = [10 20 30 40 50 60 70 80 90 100 110 120 130 140 150];
+
+load('..\..\data\testingResults4.mat');
+
 
 %% Testing treebagger
 
-parfor i=1:15
+parfor i=1:6
     varTest = vectorTest(i);
     for j=1:5
         % Creates the model 
@@ -36,4 +38,4 @@ end
 
 %% Saves the results of the tests
 
-save('../../data/eyeClassification/testingResults3.mat', 'resultTest');
+save('../../data/testingResults4.mat', 'resultTest');
