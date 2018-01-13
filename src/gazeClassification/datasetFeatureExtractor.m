@@ -6,7 +6,7 @@ clear;
 %% Feature extraction
 
 % Loads the images
-load('..\..\data\datasetImages.mat');
+load('..\..\data\gazeClassification\datasetImages.mat');
 
 featureExtractor = featureExtractor();
 
@@ -16,7 +16,7 @@ trainingFeatures = featureExtractor.extractFeatures(trainingDataset);
 
 % Creates the training classes vector
 
-trainingClasses = [repmat('E',1,numTrainingEyesImages), repmat('N',1,numTrainingNoEyesImages)]';
+trainingClasses = [repmat('E',1,numTrainingLookingImages), repmat('N',1,numTrainingNotLookingImages)]';
 
 % Creates the testing feature matrix
 
@@ -24,12 +24,12 @@ testingFeatures = featureExtractor.extractFeatures(testingDataset);
 
 % Creates the testing classes vector
 
-numTestingEyesImages = numImagesWithEyes - numTrainingEyesImages;
-numTestingNoEyesImages = numImagesWithoutEyes - numTrainingNoEyesImages;
+numTestingLookingImages = numImagesLooking - numTrainingLookingImages;
+numTestingNotLookingImages = numImagesNotLooking - numTrainingNotLookingImages;
 
-testingClasses = [repmat('E',1,numTestingEyesImages), repmat('N',1,numTestingNoEyesImages)]';
+testingClasses = [repmat('E',1,numTestingLookingImages), repmat('N',1,numTestingNotLookingImages)]';
 
 %% Saves the features and classes of training and testing datasets
 
-save('../../data/datasetFeatures.mat', 'trainingFeatures', 'trainingClasses', 'testingFeatures', 'testingClasses');
+save('../../data/gazeClassification/datasetFeatures.mat', 'trainingFeatures', 'trainingClasses', 'testingFeatures', 'testingClasses');
     
