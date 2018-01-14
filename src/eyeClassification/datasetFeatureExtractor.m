@@ -6,7 +6,7 @@ clear;
 %% Feature extraction
 
 % Loads the images
-load('..\..\data\eyeClassification\datasetImages.mat');
+load('..\..\data\eyeClassification\datasetImagesTest2.mat');
 
 featureExtractor = featureExtractor();
 

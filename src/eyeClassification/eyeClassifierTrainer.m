@@ -9,7 +9,7 @@ clear;
 load('..\..\data\eyeClassification\datasetFeatures.mat');
 
 % Creates the classifier 
-classifierTreeBagger = TreeBagger(200, trainingFeatures, trainingClasses); % TreeBagger
+classifierTreeBagger = TreeBagger(90, trainingFeatures, trainingClasses); % TreeBagger
 
 %% Saves the classifier
 save('../../data/eyeClassification/eyeClassifier.mat', 'classifierTreeBagger'); 
