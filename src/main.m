@@ -8,11 +8,11 @@ subImageSize = 32;
 subImageSampleFreq = 4;
 
 %% Loads the image
-RGB = imread('..\data\classifierConstructorDataset\BioID_1212.pgm');
+RGB = imread('..\data\originalDataset\BioID_0577.pgm');
 
 %% Loads the classificator
 
-load('..\data\eyeClassifier.mat');
+load('..\data\eyeClassification\eyeClassifier.mat');
 
 %% Creates the objects needed in the detection
 splitter = imageSplitter(subImageSize, subImageSampleFreq);
@@ -26,6 +26,7 @@ eyeDetector = eyeDetector(classifier,splitter);
 eyesPos = eyeDetector.detect(RGB);
 
 %% Prints the results
+figure();
 hold on
 markedRGB = insertMarker(RGB, eyesPos, 'color','green'); 
 imshow(markedRGB);
