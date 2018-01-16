@@ -11,9 +11,6 @@ numImages = length(imagesNames);
 
 %imagesLooking = zeros([1,numImages]);
 
-
-%Jordi = 1:1500
-
 for i=1501:numImages
     % Gets raw image dimensions
     

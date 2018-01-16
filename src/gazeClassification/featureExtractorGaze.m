@@ -1,8 +1,8 @@
 % Features extractor, extracts features from given images.
-classdef featureExtractorLook
+classdef featureExtractorGaze
        
    methods
-      function obj = featureExtractorLook()
+      function obj = featureExtractorGaze()
       end
       
       % Given an array of images it returns an array with the features of

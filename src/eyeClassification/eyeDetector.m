@@ -12,13 +12,7 @@ classdef eyeDetector
             obj.Splitter = splitter;
         end
               
-        % Given an image it returns -1 if there is no eyes on it or their
-        % position otherwise.
-        function eyesPos = detect(obj,image)
-            [splittedImages, imageCoord] = obj.Splitter.split(image);
-            prediction = obj.EyeClassifier.classify(splittedImages);
-            possibleEyesPos = imageCoord(prediction,:);
-
+        function [eyesPos, clusterCentroids] = clusterMethod(obj,possibleEyesPos)
             % Divides possible eyes positions into clusters using hiearerchical
             % clustering and finds the num of clusters.
             Y = pdist(possibleEyesPos); % Distance information
@@ -46,7 +40,7 @@ classdef eyeDetector
 
             minimumAngle = min(min(anglesCentroids));
             
-            if minimumAngle == 180
+            if minimumAngle >= 20
                eyesPos = -1;
                return
             end
@@ -55,18 +49,14 @@ classdef eyeDetector
             
             eyesPos = [clusterCentroids(i,:); clusterCentroids(j,:)];
         end
-        
-                % Given an image it returns -1 if there is no eyes on it or their
-        % position otherwise.
-        function [detectedEyesPos,possibleEyesPos] = detect2(obj,image)
-            [splittedImages, imageCoord] = obj.Splitter.split(image);
-            prediction = obj.EyeClassifier.classify(splittedImages);
-            unclassifiedEyesPos = imageCoord(prediction,:);
-            
-            [x,y] = size(image);
+
+
+        function [eyesPos, clusterCentroids] = votingMethod(obj,possibleEyesPos, imageSize)
+            x = imageSize(1);
+            y = imageSize(2);
             A = zeros(x, y);
-%             M = strel('disk',7);
-%             M = bwdist(~M);
+%           M = strel('disk',7);
+%           M = bwdist(~M);
             M = [0 0 0 0 0 1 1 1 1 1 0 0 0 0 0;
                  0 0 0 1 1 2 2 2 2 2 1 1 0 0 0;
                  0 0 1 2 2 3 3 3 3 3 2 2 1 0 0;
@@ -83,28 +73,47 @@ classdef eyeDetector
                  0 0 0 1 1 2 2 2 2 2 1 1 0 0 0;
                  0 0 0 0 0 1 1 1 1 1 0 0 0 0 0];
 
-           for i = 1:size(unclassifiedEyesPos,1)
-                varX = unclassifiedEyesPos(i,1);
-             	varY = unclassifiedEyesPos(i,2);
+           for i = 1:size(possibleEyesPos,1)
+                varX = possibleEyesPos(i,1);
+             	varY = possibleEyesPos(i,2);
              	A(varX-7:varX+7,varY-7:varY+7) = A(varX-7:varX+7,varY-7:varY+7) + M;
            end
            
            S = struct2cell(regionprops(bwconncomp(A),'Centroid'));
-           sS = size(S); sS = sS(2);
+           sS = size(S,2);
            
-           possibleEyesPos = zeros(sS,2);
+           clusterCentroids = zeros(sS,2);
            for i=1:sS
-               possibleEyesPos(i,:) = [round(S{1,i}(2)), round(S{1,i}(1))];
+               clusterCentroids(i,:) = [round(S{1,i}(2)), round(S{1,i}(1))];
            end
 
-           detectedEyesPos = [];
+           eyesPos = [];
            for i=1:sS-1
                 for j=i+1:sS
-                    if (abs(possibleEyesPos(i,2) - possibleEyesPos(j,2)) < 10)
-                        detectedEyesPos = [detectedEyesPos;possibleEyesPos(i,:);possibleEyesPos(j,:)];
+                    if (abs(clusterCentroids(i,2) - clusterCentroids(j,2)) < 10)
+                        eyesPos = [eyesPos;clusterCentroids(i,:);clusterCentroids(j,:)];
                     end
                 end
            end
         end
+
+        % Given an image it returns -1 if there is no eyes on it or their
+        % position otherwise.
+        function [eyesImages, eyesPos, possibleEyesPos, clusterCentroids] = detect(obj,image,method)
+            [splittedImages, imageCoord] = obj.Splitter.split(image);
+            prediction = obj.EyeClassifier.classify(splittedImages);
+            possibleEyesPos = imageCoord(prediction,:);
+
+            if method == "cluster"
+                [eyesPos, clusterCentroids] = obj.clusterMethod(possibleEyesPos);
+            elseif method == "voting"
+                imageSize = size(image);
+                [eyesPos, clusterCentroids] = obj.votingMethod(possibleEyesPos, imageSize);
+            end
+
+            eyesImages = cat(3,obj.Splitter.splitSubimage(eyesPos(1,:), image),obj.Splitter.splitSubimage(eyesPos(2,:), image));
+
+        end
+        
     end
 end

@@ -8,26 +8,26 @@ clear;
 % Loads the images
 load('..\..\data\gazeClassification\datasetImages.mat');
 
-featureExtractor = featureExtractorLook();
+featureExtractor = featureExtractorGaze();
 
 % Creates the training feature matrix
 
-trainingFeatures = featureExtractor.extractFeaturesHOG(trainingDataset);
+trainingFeatures = featureExtractor.extractFeatures(trainingDataset);
 
 % Creates the training classes vector
 
-trainingClasses = [repmat('E',1,numTrainingLookingImages), repmat('N',1,numTrainingNotLookingImages)]';
+trainingClasses = [repmat('L',1,numTrainingLookingImages), repmat('N',1,numTrainingNotLookingImages)]';
 
 % Creates the testing feature matrix
 
-testingFeatures = featureExtractor.extractFeaturesHOG(testingDataset);
+testingFeatures = featureExtractor.extractFeatures(testingDataset);
 
 % Creates the testing classes vector
 
 numTestingLookingImages = numImagesLooking - numTrainingLookingImages;
 numTestingNotLookingImages = numImagesNotLooking - numTrainingNotLookingImages;
 
-testingClasses = [repmat('E',1,numTestingLookingImages), repmat('N',1,numTestingNotLookingImages)]';
+testingClasses = [repmat('L',1,numTestingLookingImages), repmat('N',1,numTestingNotLookingImages)]';
 
 %% Saves the features and classes of training and testing datasets
 

@@ -12,6 +12,16 @@ classdef imageSplitter
          obj.SampleFrequency = sampleFrequency;
       end
       
+    function subimage = splitSubimage(obj, coord, image)
+        j = coord(1)-floor(obj.ImagesDimension/2);
+        i = coord(2)-floor(obj.ImagesDimension/2);
+     	up = i; 
+        left = j;
+        down = i+obj.ImagesDimension-1;
+        right = j+obj.ImagesDimension-1;
+        subimage = imresize(image(up:down, left:right), [64,64]);
+    end
+      
       % Given an image it returns a set of images extracted from it and
       % their coordinates in the original image. Coordinates represent the
       % indices of the center pixel of the subimage in the original image.

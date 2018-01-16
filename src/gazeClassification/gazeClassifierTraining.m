@@ -12,4 +12,4 @@ load('..\..\data\gazeClassification\datasetFeatures.mat');
 classifierTreeBagger = TreeBagger(100, trainingFeatures, trainingClasses); % TreeBagger
 
 %% Saves the classifier
-save('../../data/gazeClassification/lookClassifier.mat', 'classifierTreeBagger'); 
+save('../../data/gazeClassification/gazeClassifier.mat', 'classifierTreeBagger'); 
