@@ -117,8 +117,14 @@ classdef eyeDetector
                 imageSize = size(image);
                 [eyesPos, clusterCentroids] = obj.votingMethod(possibleEyesPos, imageSize);
             end
+            
+             if size(eyesPos,1) ~= 2
+               eyesImages = [];
+               return;
+             else
+                eyesImages = cat(3,obj.Splitter.splitSubimage(eyesPos(1,:), image),obj.Splitter.splitSubimage(eyesPos(2,:), image));
 
-            eyesImages = cat(3,obj.Splitter.splitSubimage(eyesPos(1,:), image),obj.Splitter.splitSubimage(eyesPos(2,:), image));
+             end
 
         end
         

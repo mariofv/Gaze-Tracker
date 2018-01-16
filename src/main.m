@@ -3,13 +3,17 @@ clc;
 clear;
 
 %% Initializes some usefull variables
-subImageSize = 32;
-subImageSampleFreq = 4;
+subImageSampleFreq = 2;
 textPosition = [0 0]; 
 
 % Loads the image
-RGB = imread('..\data\originalDataset\BioID_0745.pgm'); %27 93 233 745 1000 1313
+RGB = imread('..\data\originalDataset\BioID_1313.pgm'); %27 93 233 235 745 1000 1313
+% RGB = rgb2gray(imread('..\data\originalDataset\BioXX_03.jpg')); %00 01 02
+% RGB = rgb2gray(imread('..\data\originalDataset\BioXX_04.jpeg')); %04
 
+[y,x] = size(RGB);
+subImageSize = round(y/10);
+%subImageSize = 32
 %% EYES DETECTION 
 
 % Loads the classifier
@@ -27,8 +31,9 @@ eyeDetector = eyeDetector(classifier,splitter);
 [eyesImages, eyesPos, possibleEyesPos, centroidsPos] = eyeDetector.detect(RGB, "voting"); % You can choose between "voting" and "cluster"
 
 if(size(eyesPos) ~= 2)
-    RGB = insertMarker(RGB, possibleEyesPos, 'color','red');
-
+    if size(centroidsPos) ~= 0
+        RGB = insertMarker(RGB, centroidsPos, 'color','red');
+    end
     RGB = insertText(RGB,textPosition,'No eyes detected', 'FontSize',18,'BoxColor',...
         {'red'},'BoxOpacity',0.7,'TextColor','white');
 else      
