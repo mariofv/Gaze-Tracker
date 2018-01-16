@@ -103,7 +103,14 @@ classdef eyeDetector
             [splittedImages, imageCoord] = obj.Splitter.split(image);
             prediction = obj.EyeClassifier.classify(splittedImages);
             possibleEyesPos = imageCoord(prediction,:);
-
+            
+            if size(possibleEyesPos,1) < 2
+               eyesImages = [];
+               eyesPos = [];
+               clusterCentroids = [];
+               return;
+            end
+            
             if method == "cluster"
                 [eyesPos, clusterCentroids] = obj.clusterMethod(possibleEyesPos);
             elseif method == "voting"
