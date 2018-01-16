@@ -25,8 +25,7 @@ classifier = eyeClassifier(classifierTreeBagger, featureExtractor);
 eyeDetector = eyeDetector(classifier,splitter);
 
 %% Looks for the eyes in the image
-[eyesImages, eyesPos, possibleEyesPos, centroidsPos] = eyeDetector.detect(RGB, "voting");
-
+[eyesImages, eyesPos, possibleEyesPos, centroidsPos] = eyeDetector.detect(RGB, "voting"); % You can choose between "voting" and "cluster"
 
 
 %% GAZE DETECTION 
@@ -49,7 +48,7 @@ gazeDetector = gazeDetector(classifier);
 
 textPosition = [0 0]; 
 
-if(~isempty(eyesPos))
+if(size(eyesPos) == 2)
     RGB = insertMarker(RGB, eyesPos, 'color','green');
     RGB = insertMarker(RGB, eyesPos(eyesAreLooking,:), 'color','blue');
     if(personIsLooking) 

@@ -12,12 +12,12 @@ vectorTest = [8 4 9; 12 4 9; 16 4 9; 20 4 9; 24 4 9;
 resultTest = zeros(15,5,6); %Fila: cell / black / numBins / acc / eyes / noEyes
 
 % Creates the training and testing classes vector
-trainingClasses = [repmat('L',1,numTrainingEyesImages), repmat('N',1,numTrainingNoEyesImages)]';
+trainingClasses = [repmat('L',1,numTrainingLookingImages), repmat('N',1,numTrainingNotLookingImages)]';
 
-numTestingEyesImages = numImagesWithEyes - numTrainingEyesImages;
-numTestingNoEyesImages = numImagesWithoutEyes - numTrainingNoEyesImages;
+numTestingLookingImages = numImagesLooking - numTrainingLookingImages;
+numTestingNotLookingImages = numImagesNotLooking - numTrainingNotLookingImages;
 
-testingClasses = [repmat('L',1,numTestingEyesImages), repmat('N',1,numTestingNoEyesImages)]';
+testingClasses = [repmat('L',1,numTestingLookingImages), repmat('N',1,numTestingNotLookingImages)]';
 
 %% Testing feature extraction
 
@@ -51,4 +51,4 @@ end
 
 %% Saves the results of the tests
 
-save('../../data/eyeClassification/testingResults2.mat', 'resultTest');
+save('../../data/gazeClassification/testingResults1.mat', 'resultTest');
