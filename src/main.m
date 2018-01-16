@@ -7,7 +7,7 @@ subImageSize = 32;
 subImageSampleFreq = 4;
 
 %% Loads the image
-RGB = imread('..\data\originalDataset\BioID_0543.pgm');
+RGB = imread('..\data\originalDataset\BioID_0583.pgm');
 
 
 
