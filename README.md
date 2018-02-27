@@ -3,27 +3,26 @@
 
 In this project we created a gaze tracker using Computer Vision and Machine Learning algorithms, implementing the whole code with Matlab. This project was developed during the Computer Vision subject of the [UPC](https://www.upc.edu/ca).
 
-![](header.png)
-
-## Installation
-
-To run this project just install [Matlab](https://es.mathworks.com/products/matlab.html) on your computer and then import it. 
-
-> __Attention! Matlab is a paid software so you will require a valid license to run this project.__
-
 ## Usage example
 
 In order to use this, first download the repository in your machine. Then start Matlab and import the project using `/src` folder as the root folder. Finally, run the code located in the file `/src/main.m`. 
 
 The code is prepared to show us an example of a photo of a person who is looking at the camera. If you run the code you should see the following image.
 
-/TODO: Add image
+![Positive case](https://github.com/mariofv/Gaze-Tracker/blob/master/img/positiveCase.png)
 
 Also, the program recognizes images of people who are not looking at the camera and images with no people at all, as you can see below.
 
-/TODO: Add images
+![Negative case](https://github.com/mariofv/Gaze-Tracker/blob/master/img/negativeCase.png)
+![No eyes case](https://github.com/mariofv/Gaze-Tracker/blob/master/img/negativePlusCase.png)
 
 In order to change the image to be processed just edit the corresponding line in `/src/main.m`. 
+
+## Installation
+
+To run this project just install [Matlab](https://es.mathworks.com/products/matlab.html) on your computer and then import it. 
+
+> __Attention! Matlab is a paid software so you will require a valid license to run this project.__
 
 ## Project structure
 
